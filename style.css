@@ -1,0 +1,8 @@
+/* Custom CSS (auto-loaded by Mintlify). Founder feedback: the selected sidebar
+   item and page titles read too bold. Dial them toward the app's lighter type.
+   Headings are also set via docs.json fonts.heading.weight; this handles the
+   active nav link, which docs.json can't target. */
+
+a[aria-current="page"] {
+  font-weight: 500;
+}

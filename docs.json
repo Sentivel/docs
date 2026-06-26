@@ -17,7 +17,15 @@
     "default": "dark"
   },
   "fonts": {
-    "family": "Geist"
+    "family": "Geist",
+    "heading": {
+      "family": "Geist",
+      "weight": 500
+    },
+    "body": {
+      "family": "Geist",
+      "weight": 400
+    }
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -31,16 +39,24 @@
             "pages": ["index", "quickstart", "authentication", "set-up-with-ai"]
           },
           {
-            "group": "Guides",
+            "group": "Monitoring & status",
             "pages": [
               "guides/monitors",
               "guides/status-pages",
-              "guides/dependencies",
+              "guides/dependencies"
+            ]
+          },
+          {
+            "group": "Incidents & on-call",
+            "pages": [
               "guides/incidents",
               "guides/escalation",
-              "guides/integrations",
-              "guides/account"
+              "guides/integrations"
             ]
+          },
+          {
+            "group": "Your workspace",
+            "pages": ["guides/account"]
           }
         ]
       },
