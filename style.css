@@ -1,8 +1,25 @@
 /* Custom CSS (auto-loaded by Mintlify). Founder feedback: the selected sidebar
-   item and page titles read too bold. Dial them toward the app's lighter type.
-   Headings are also set via docs.json fonts.heading.weight; this handles the
-   active nav link, which docs.json can't target. */
+   item and page titles read too bold. Mintlify's theme applies a heavy weight via
+   utility classes that beat both a plain rule and docs.json's fonts.heading.weight,
+   so we pin lighter weights here with !important to actually win. Dialed toward the
+   app's lighter type — colour (not weight) is what marks the active nav item. */
 
-a[aria-current="page"] {
-  font-weight: 500;
+/* Selected sidebar link — bring it down from semibold to a light medium. Also
+   targets any child span the label sits in. */
+a[aria-current="page"],
+a[aria-current="page"] * {
+  font-weight: 450 !important;
+}
+
+/* Page headings — medium, not semibold/bold. The big page title stays a touch
+   heavier than the section headings for hierarchy, but well short of bold. */
+h1 {
+  font-weight: 520 !important;
+  letter-spacing: -0.015em;
+}
+
+h2,
+h3,
+h4 {
+  font-weight: 500 !important;
 }
