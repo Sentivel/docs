@@ -36,7 +36,7 @@
         "groups": [
           {
             "group": "Get started",
-            "pages": ["index", "quickstart", "authentication", "set-up-with-ai"]
+            "pages": ["index", "quickstart", "set-up-with-ai"]
           },
           {
             "group": "Monitoring & status",
@@ -57,6 +57,10 @@
           {
             "group": "Your workspace",
             "pages": ["guides/account"]
+          },
+          {
+            "group": "Developers",
+            "pages": ["authentication", "api-overview"]
           }
         ]
       },

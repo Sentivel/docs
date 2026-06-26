@@ -1,58 +1,55 @@
 ---
 title: "Introduction"
 description: "Monitor your services, publish a status page, and watch what you depend on."
+icon: "book-open"
 ---
 
 Sentivel is one product that does three things: it monitors your own services, it
 publishes a status page your customers can trust, and it watches the providers you
-depend on so an upstream outage shows up in your own words. You can use as much or
-as little as you need; a beautiful status page with monitoring, and no
-dependencies, is a complete setup.
+depend on so an upstream outage shows up in your own words. Use as much or as
+little as you need: a beautiful status page with monitoring, and no dependencies,
+is a complete setup.
 
-<CardGroup cols={2}>
-  <Card title="Guides" icon="book-open" href="/guides/monitors">
-    How to use Sentivel, feature by feature.
+## Start here
+
+<CardGroup cols={3}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Add a monitor and publish a status page in three API calls.
   </Card>
   <Card title="Set up with AI" icon="robot" href="/set-up-with-ai">
-    Point an agent at Sentivel and have it set your workspace up.
+    Point an agent at Sentivel and have it set your workspace up for you.
   </Card>
-  <Card title="Quickstart" icon="rocket" href="/quickstart">
-    Provision a workspace in three API calls.
-  </Card>
-  <Card title="API reference" icon="code" href="/me">
-    Every endpoint, generated from the live OpenAPI spec.
+  <Card title="Authentication" icon="key" href="/authentication">
+    Create an API token and authenticate your requests.
   </Card>
 </CardGroup>
 
-## Using the API
+## Explore
 
-The API manages your workspace in code: create components, monitors, and status
-pages, and read their state. It's built for CI pipelines, infrastructure as code,
-and AI agents.
+<CardGroup cols={2}>
+  <Card title="Monitors" icon="heart-pulse" href="/guides/monitors">
+    HTTP, keyword, heartbeat, TCP and DNS checks that turn failures into incidents.
+  </Card>
+  <Card title="Status pages" icon="signal" href="/guides/status-pages">
+    Publish on your own subdomain or domain, with the design you choose.
+  </Card>
+  <Card title="Dependencies & cascade" icon="diagram-project" href="/guides/dependencies">
+    Show a third-party outage on your page, in your own words.
+  </Card>
+  <Card title="Incidents" icon="triangle-exclamation" href="/guides/incidents">
+    Open, update, and resolve incidents your customers can follow.
+  </Card>
+  <Card title="Escalation & on-call" icon="bell" href="/guides/escalation">
+    Get the right person, on the right channel, until someone responds.
+  </Card>
+  <Card title="Integrations" icon="plug" href="/guides/integrations">
+    Send alerts to your tools, and bring alerts in from others.
+  </Card>
+</CardGroup>
 
-- **Base URL:** `https://www.sentivel.com/api/v1`
-- **Format:** JSON in, JSON out. Times are ISO 8601 (UTC).
-- **Auth:** an org API token sent as a Bearer credential. See
-  [Authentication](/authentication).
+## Build on the API
 
-A single resource is under `data`; a list is an array under `data` with a
-`pagination` object (`?page` + `?per_page`, default 50, max 250):
-
-```json
-{
-  "data": [ { "id": "...", "name": "Checkout" } ],
-  "pagination": { "page": 1, "perPage": 50, "total": 1, "totalPages": 1 }
-}
-```
-
-Errors carry a stable `code`, a human `message`, and optional field `details`:
-
-```json
-{ "error": { "code": "invalid_request", "message": "Some fields are invalid." } }
-```
-
-## Rate limits
-
-Requests are limited per token. Every response carries `X-RateLimit-Limit`,
-`X-RateLimit-Remaining`, and `X-RateLimit-Reset` headers. A `429` also includes
-`Retry-After` (seconds).
+Everything in the dashboard is also available over a REST API and a hosted MCP
+server, so CI pipelines, infrastructure as code, and AI agents can manage a
+workspace in full. Start with the [API overview](/api-overview), then browse the
+[API reference](/me) for every endpoint.

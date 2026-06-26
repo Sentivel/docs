@@ -1,0 +1,48 @@
+---
+title: "API overview"
+description: "Base URL, response shape, errors, and rate limits."
+icon: "code"
+---
+
+The API manages your workspace in code: create components, monitors, and status
+pages, and read their state. It is built for CI pipelines, infrastructure as code,
+and AI agents. To call it as an agent instead, see [Set up with AI](/set-up-with-ai).
+
+- **Base URL:** `https://www.sentivel.com/api/v1`
+- **Format:** JSON in, JSON out. Times are ISO 8601 (UTC).
+- **Auth:** an org API token sent as a Bearer credential. See
+  [Authentication](/authentication).
+
+## Response shape
+
+A single resource is returned under `data`. A list is an array under `data` with a
+`pagination` object (`?page` + `?per_page`, default 50, max 250):
+
+```json
+{
+  "data": [{ "id": "...", "name": "Checkout" }],
+  "pagination": { "page": 1, "perPage": 50, "total": 1, "totalPages": 1 }
+}
+```
+
+## Errors
+
+Errors carry a stable `code`, a human `message`, and optional field `details`:
+
+```json
+{ "error": { "code": "invalid_request", "message": "Some fields are invalid." } }
+```
+
+The full list of codes is in [Authentication](/authentication#errors).
+
+## Rate limits
+
+Requests are limited per token. Every response carries `X-RateLimit-Limit`,
+`X-RateLimit-Remaining`, and `X-RateLimit-Reset` headers. A `429` also includes
+`Retry-After` (seconds).
+
+## Reference
+
+Browse the [full API reference](/me) for every endpoint, field, and response,
+generated from the live OpenAPI spec at
+[`/api/v1/openapi.json`](https://www.sentivel.com/api/v1/openapi.json).
