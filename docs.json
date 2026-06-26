@@ -7,46 +7,84 @@
     "light": "#fafafa",
     "dark": "#0a0a0a"
   },
+  "background": {
+    "color": {
+      "light": "#ffffff",
+      "dark": "#000000"
+    }
+  },
+  "appearance": {
+    "default": "dark"
+  },
+  "fonts": {
+    "family": "Geist"
+  },
   "favicon": "/favicon.svg",
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "Get started",
-        "pages": ["index", "quickstart", "authentication", "set-up-with-ai"]
-      },
-      {
-        "group": "Guides",
-        "pages": [
-          "guides/monitors",
-          "guides/status-pages",
-          "guides/dependencies",
-          "guides/incidents",
-          "guides/escalation",
-          "guides/integrations",
-          "guides/account"
+        "tab": "Documentation",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": ["index", "quickstart", "authentication", "set-up-with-ai"]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/monitors",
+              "guides/status-pages",
+              "guides/dependencies",
+              "guides/incidents",
+              "guides/escalation",
+              "guides/integrations",
+              "guides/account"
+            ]
+          }
         ]
       },
       {
-        "group": "API reference",
+        "tab": "API reference",
+        "icon": "code",
         "openapi": "https://www.sentivel.com/api/v1/openapi.json",
-        "pages": [
-          "GET /me",
-          "GET /components",
-          "POST /components",
-          "PATCH /components/{id}",
-          "DELETE /components/{id}",
-          "GET /monitors",
-          "POST /monitors",
-          "PATCH /monitors/{id}",
-          "DELETE /monitors/{id}",
-          "GET /monitors/{id}/uptime",
-          "GET /status-pages",
-          "POST /status-pages",
-          "PATCH /status-pages/{id}",
-          "DELETE /status-pages/{id}",
-          "GET /incidents",
-          "POST /incidents",
-          "GET /incidents/{id}"
+        "groups": [
+          {
+            "group": "Account",
+            "pages": ["GET /me"]
+          },
+          {
+            "group": "Components",
+            "pages": [
+              "GET /components",
+              "POST /components",
+              "PATCH /components/{id}",
+              "DELETE /components/{id}"
+            ]
+          },
+          {
+            "group": "Monitors",
+            "pages": [
+              "GET /monitors",
+              "POST /monitors",
+              "PATCH /monitors/{id}",
+              "DELETE /monitors/{id}",
+              "GET /monitors/{id}/uptime"
+            ]
+          },
+          {
+            "group": "Status pages",
+            "pages": [
+              "GET /status-pages",
+              "POST /status-pages",
+              "PATCH /status-pages/{id}",
+              "DELETE /status-pages/{id}"
+            ]
+          },
+          {
+            "group": "Incidents",
+            "pages": ["GET /incidents", "POST /incidents", "GET /incidents/{id}"]
+          }
         ]
       }
     ]
