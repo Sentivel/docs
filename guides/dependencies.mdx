@@ -1,0 +1,69 @@
+---
+title: "Dependencies & cascade"
+description: "Show a third-party outage on your status page, in your own words."
+---
+
+Your service depends on other services. When Stripe, a cloud region, or an AI
+provider has an incident, your customers feel it, and they ask you what is going
+on. Sentivel watches those providers and, when one breaks, posts a plain-English
+advisory on your status page automatically.
+
+You map which of your components depend on which providers. That map drives
+everything here. Sentivel never guesses a dependency; you define it.
+
+## How cascade works
+
+1. Sentivel polls a provider's status feed and detects an incident (or a part of
+   it going down).
+2. It checks your dependency map for any of your components that rely on the
+   affected part.
+3. For each match it posts an upstream advisory on your status page and flags the
+   component as affected.
+4. When the provider recovers, the advisory clears on its own.
+
+The advisory attributes the problem to the provider, in plain words:
+
+> We're aware of an ongoing issue with AWS us-east-1, a service we rely on. Some
+> functionality may be affected until it's resolved.
+
+It never asserts that you are down, and never makes a promise it can't keep ("your
+data is safe"). It states what is true: a provider you depend on has a problem.
+
+## Link a dependency
+
+1. Go to **Dependencies** in the dashboard.
+2. Choose one of your components, then the provider it relies on.
+3. Pick the specific parts you depend on (for example "Claude and Claude Code",
+   or a region like Cloudflare "Africa"). Leave the set empty to depend on the
+   whole provider.
+
+<Note>
+  An empty part set means the whole provider, so the component cascades only on a
+  filed provider incident. A part-scoped link also reacts to that specific part
+  going non-operational, even when the provider hasn't filed an incident yet.
+</Note>
+
+A link re-evaluates as soon as you save it, so an issue that is already happening
+shows up right away, not on the next poll.
+
+## Auto-post or review first
+
+Each cascade has two modes:
+
+- **Auto-post (default).** The advisory goes up the moment a depended-on provider
+  has an incident. It's a factual attribution to the provider, so it needs no
+  sign-off.
+- **Review first.** The cascade is flagged instead of posted, and Sentivel emails
+  your owners and admins to review it. You publish it with one click.
+
+## Review what's live
+
+The **Dependencies** page groups current upstream issues by provider. Each one has
+a single reversible **Show** / **Hide** toggle, so you stay in control of what
+customers see. Hiding an advisory is logged, and survives later polls of the same
+incident.
+
+## Suggestions
+
+When a monitor's target is hosted on a provider in the catalog, Sentivel suggests
+the dependency link. It never creates the link for you; you confirm it.

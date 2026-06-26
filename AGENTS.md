@@ -1,33 +1,44 @@
-> **First-time setup**: Customize this file for your project. Prompt the user to customize this file for their project.
-> For Mintlify product knowledge (components, configuration, writing standards),
-> install the Mintlify skill: `npx skills add https://mintlify.com/docs`
+# Sentivel documentation: project instructions
 
-# Documentation project instructions
+The public docs for Sentivel (a unified reliability platform: monitoring, status
+pages, and dependency/cascade watching). Built on [Mintlify](https://mintlify.com):
+MDX pages with YAML frontmatter, config in `docs.json`. The API reference is
+generated from the live OpenAPI spec at `https://www.sentivel.com/api/v1/openapi.json`.
 
-## About this project
+- Mintlify product knowledge (components, config) via the Mintlify MCP server
+  `https://mcp.mintlify.com`, or query docs via `https://www.mintlify.com/docs/mcp`.
 
-- This is a documentation site built on [Mintlify](https://mintlify.com)
-- Pages are MDX files with YAML frontmatter
-- Configuration lives in `docs.json`
-- Use the Mintlify MCP server, `https://mcp.mintlify.com`, to edit content and settings via MCP
-- Use the Mintlify docs MCP server, `https://www.mintlify.com/docs/mcp`, to query information about using Mintlify via MCP
+## Voice: read this first
+
+Write like a senior engineer explaining to a peer. **Never like AI.** The full
+checklist is in `STYLE.md` (the canonical voice guide). The short version:
+
+- Second person, imperative. Instruct, don't narrate.
+- Short declarative sentences (~8–15 words). One idea per sentence. Active voice.
+- Context, then action. No preamble; don't restate the heading.
+- Task-based, sentence-case headings ("Add a monitor", not "Configuration").
+- Real, runnable code; show the actual response.
+- Bold for UI elements (Click **Settings**); code formatting for files, commands,
+  paths.
+- **Banned (AI tells):** powerful, robust, seamless, effortless, comprehensive,
+  leverage, unlock, elevate, supercharge, easily, simply, just, "feel free to",
+  "delve", "dive in", em dashes, Title Case Everything. See `STYLE.md` for the
+  full list. Read every page aloud and cut what doesn't change the meaning.
 
 ## Terminology
 
-{/* Add product-specific terms and preferred usage */}
-{/* Example: Use "workspace" not "project", "member" not "user" */}
-
-## Style preferences
-
-{/* Add any project-specific style rules below */}
-
-- Use active voice and second person ("you")
-- Keep sentences concise — one idea per sentence
-- Use sentence case for headings
-- Bold for UI elements: Click **Settings**
-- Code formatting for file names, commands, paths, and code references
+- **Workspace**, not "project" or "organization" (in user-facing copy).
+- **Member**, not "user".
+- **Component** = a unit shown on a status page. **Monitor** = a check that drives
+  a component's status. **Status page** = the public page.
+- **Cascade** = a depended-on provider's incident flagging your component.
+- **Upstream advisory** = the plain-English message cascade posts on your page.
 
 ## Content boundaries
 
-{/* Define what should and shouldn't be documented */}
-{/* Example: Don't document internal admin features */}
+- Document only shipped behaviour. Never overclaim. (Example: checks run from a
+  single region today; don't imply multi-region consensus is the default.)
+- No novelty claims ("first", "only", "we invented"). Others do parts of cascade.
+- Don't document internal staff/admin tooling or unreleased features. Billing is
+  not documented until it ships.
+- Honest copy: state what is true, promise nothing the product can't keep.

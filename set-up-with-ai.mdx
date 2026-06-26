@@ -1,0 +1,45 @@
+---
+title: "Set up with AI"
+description: "Point an AI agent at Sentivel and have it set up your workspace."
+---
+
+Sentivel runs a hosted MCP server, so an AI agent (Claude, Cursor, and other
+MCP-capable assistants) can read your workspace and make changes on your behalf.
+You connect it once, then ask in plain language: "add a monitor for my API and
+publish a status page."
+
+## Connect an agent
+
+1. In the dashboard, open **Set up with AI** (on the overview, or during
+   onboarding).
+2. It mints a personal token and shows the ready MCP configuration for your agent.
+3. Paste that into your assistant's MCP settings.
+
+The server lives at `mcp.sentivel.com`. Your agent authenticates as you, scoped to
+the workspace you choose, and can only do what your role allows.
+
+<Note>
+  A personal token acts as you across your workspaces; pass a workspace with the
+  `X-Sentivel-Workspace` header (or let the agent pick one per call). Connected
+  apps authorize through OAuth instead and you grant them a specific set of
+  workspaces. Revoke either under Account → Connections.
+</Note>
+
+## What it can do
+
+The agent has the same reads and actions as the [REST API](/me):
+create and manage monitors, components, status pages, incidents, escalation
+policies, schedules, and dependencies. People management, billing, and a member's
+own phone number stay human-only and are never exposed to a token.
+
+## Example asks
+
+- "Add an HTTP monitor for `https://api.acme.com/health` and attach it to a new
+  Checkout component."
+- "Publish a status page at `acme` with my components grouped by service."
+- "We depend on Stripe for payments. Map that so a Stripe incident shows on our
+  page."
+- "Open an incident on Checkout and post an update that we're investigating."
+
+Every change an agent makes is a normal workspace change you can see and undo in
+the dashboard.

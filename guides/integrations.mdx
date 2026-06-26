@@ -1,0 +1,36 @@
+---
+title: "Integrations"
+description: "Send alerts to your tools, and bring alerts in from others."
+---
+
+Integrations are the destinations Sentivel sends alerts to, and the sources it can
+receive alerts from. Set them up under **Integrations**, then use them as targets
+in an [escalation policy](/guides/escalation).
+
+## Outbound destinations
+
+- **Slack.** Post incidents to a channel.
+- **Discord.** Post incidents to a channel.
+- **Microsoft Teams.** Post to a Teams workflow (incoming webhook).
+- **Webhook.** POST a JSON payload to any URL you control.
+
+Add one with a guided, type-first setup. Name it, send a test, and mute it without
+deleting when you need quiet. Webhook URLs are checked the same way monitor targets
+are, so an integration can't be pointed at an internal address.
+
+## Inbound sources
+
+Turn an external alert into a Sentivel incident:
+
+- **Incoming webhook.** A per-integration signed URL. POST to it and Sentivel
+  opens an incident, mapping the payload to a title and metadata.
+- **Email to incident.** A unique address per integration; the subject and body
+  become the incident.
+
+This is how you route alerts from other tools into one place.
+
+## People versus channels
+
+A channel is a shared destination. A person is a teammate, paged through an
+escalation policy on their own contact methods. Keep the two distinct: a channel
+broadcasts, a policy pages individuals until one acknowledges.

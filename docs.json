@@ -1,37 +1,55 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Sentivel",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#0a0a0a",
+    "light": "#fafafa",
+    "dark": "#0a0a0a"
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "pages": [
+    "groups": [
       {
-        "group": "Getting Started",
+        "group": "Get started",
+        "pages": ["index", "quickstart", "authentication", "set-up-with-ai"]
+      },
+      {
+        "group": "Guides",
         "pages": [
-          "index",
-          "quickstart"
+          "guides/monitors",
+          "guides/status-pages",
+          "guides/dependencies",
+          "guides/incidents",
+          "guides/escalation",
+          "guides/integrations",
+          "guides/account"
+        ]
+      },
+      {
+        "group": "API reference",
+        "openapi": "https://www.sentivel.com/api/v1/openapi.json",
+        "pages": [
+          "GET /me",
+          "GET /components",
+          "POST /components",
+          "PATCH /components/{id}",
+          "DELETE /components/{id}",
+          "GET /monitors",
+          "POST /monitors",
+          "PATCH /monitors/{id}",
+          "DELETE /monitors/{id}",
+          "GET /monitors/{id}/uptime",
+          "GET /status-pages",
+          "POST /status-pages",
+          "PATCH /status-pages/{id}",
+          "DELETE /status-pages/{id}",
+          "GET /incidents",
+          "POST /incidents",
+          "GET /incidents/{id}"
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -41,32 +59,22 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@sentivel.com"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "href": "https://www.sentivel.com/dashboard"
     }
   },
   "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
+    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "website": "https://www.sentivel.com",
+      "github": "https://github.com/Sentivel"
     }
   }
 }

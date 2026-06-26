@@ -1,47 +1,56 @@
 ---
 title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+description: "Provision a workspace in three calls."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
+This walkthrough adds a monitor and publishes a status page using your API token.
+First, set it as an environment variable:
 
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
-
-## Prerequisites
-
-Before you begin, you must have:
-
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
-
-## Get started
+```bash
+export SENTIVEL_TOKEN="sv_..."
+```
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
-
+  <Step title="Confirm the token works">
     ```bash
-    npm install your-package
+    curl https://www.sentivel.com/api/v1/me \
+      -H "Authorization: Bearer $SENTIVEL_TOKEN"
     ```
+
+    You get back the workspace, the token's role, and its capabilities.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
+
+  <Step title="Add a monitor">
+    Creating a monitor also creates its public component. The first check runs on
+    the next poll cycle (within about two minutes).
 
     ```bash
-    your-cli init
+    curl -X POST https://www.sentivel.com/api/v1/monitors \
+      -H "Authorization: Bearer $SENTIVEL_TOKEN" \
+      -H "Content-Type: application/json" \
+      -d '{ "name": "API", "target": "https://api.acme.com/health", "expectedStatusCodes": [200] }'
     ```
+
+    <Note>
+      The target is fetched server-side on every poll, so private, loopback, and
+      internal addresses are rejected. Public http(s) only.
+    </Note>
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
 
+  <Step title="Publish a status page">
     ```bash
-    your-cli start
+    curl -X POST https://www.sentivel.com/api/v1/status-pages \
+      -H "Authorization: Bearer $SENTIVEL_TOKEN" \
+      -H "Content-Type: application/json" \
+      -d '{ "name": "Acme Status", "vanityUrl": "acme" }'
     ```
+
+    Your page is live at `https://acme.sentivel.com`.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Next steps
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+Browse the full [API reference](/me) for every endpoint, field, and response,
+generated from the live OpenAPI spec at
+[`/api/v1/openapi.json`](https://www.sentivel.com/api/v1/openapi.json).

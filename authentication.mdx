@@ -1,0 +1,48 @@
+---
+title: "Authentication"
+description: "Create an API token and authenticate your requests."
+---
+
+Every request authenticates with an **org API token**, sent as a Bearer
+credential:
+
+```bash
+Authorization: Bearer sv_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## Create a token
+
+In the dashboard, go to **Developers → API tokens** and create one. You choose a
+role for the token and, optionally, an expiry.
+
+<Warning>
+  The full token is shown once at creation. Store it somewhere safe. Sentivel
+  keeps only a hash and can never show it again. If you lose it, revoke it and
+  create a new one.
+</Warning>
+
+A token is scoped to a single workspace and acts at its role. There is no separate
+permission language to learn: it is exactly the roles your teammates have.
+
+## What each role can do
+
+| Role        | Read | Create and manage components, monitors, status pages |
+| ----------- | ---- | ---------------------------------------------------- |
+| `viewer`    | Yes  | No                                                   |
+| `developer` | Yes  | Yes                                                  |
+| `admin`     | Yes  | Yes                                                  |
+
+A token is never an `owner`. Billing and workspace deletion are not API
+operations.
+
+## Errors
+
+| Code              | HTTP | Meaning                                          |
+| ----------------- | ---- | ------------------------------------------------ |
+| `unauthorized`    | 401  | Missing, invalid, revoked, or expired token      |
+| `forbidden`       | 403  | The token's role cannot perform this action      |
+| `not_found`       | 404  | No such resource                                 |
+| `invalid_request` | 400  | Body failed validation (see `details`)           |
+| `rate_limited`    | 429  | Too many requests                                |
+| `conflict`        | 409  | A status-page slug is reserved or already taken  |
+| `internal`        | 500  | Something went wrong on our side                 |
