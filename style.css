@@ -1,18 +1,26 @@
 /* Custom CSS (auto-loaded by Mintlify). Founder feedback: the selected sidebar
-   item and page titles read too bold. Mintlify's theme applies a heavy weight via
-   utility classes that beat both a plain rule and docs.json's fonts.heading.weight,
-   so we pin lighter weights here with !important to actually win. Dialed toward the
-   app's lighter type — colour (not weight) is what marks the active nav item. */
+   item and page titles read too bold. Two causes in the mint theme:
+   1. the ACTIVE nav item fakes extra weight with a currentColor text-shadow stroke
+      ([text-shadow:-0.2px_0_0_currentColor,0.2px_0_0_currentColor]) — so it looks
+      heavy no matter the font-weight;
+   2. the page title uses `font-bold` and prose headings `font-semibold`, which beat
+      docs.json's fonts.heading.weight.
+   We kill the faux-bold stroke and pin lighter weights with !important so they win.
+   The active item is still marked by colour + the background tint, not heaviness. */
 
-/* Selected sidebar link — bring it down from semibold to a light medium. Also
-   targets any child span the label sits in. */
+/* Active sidebar link + active top nav tab: drop the text-shadow stroke and the
+   heavy weight (colour/tint already mark them as current). */
 a[aria-current="page"],
-a[aria-current="page"] * {
+a[aria-current="location"],
+a[aria-current="page"] *,
+a[aria-current="location"] *,
+.nav-tabs-item[data-active="true"],
+.nav-tabs-item[data-active="true"] * {
+  text-shadow: none !important;
   font-weight: 450 !important;
 }
 
-/* Page headings — medium, not semibold/bold. The big page title stays a touch
-   heavier than the section headings for hierarchy, but well short of bold. */
+/* Page title + section headings: medium, not bold/semibold. */
 h1 {
   font-weight: 520 !important;
   letter-spacing: -0.015em;
