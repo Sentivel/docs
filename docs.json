@@ -89,7 +89,8 @@
               "POST /monitors",
               "PATCH /monitors/{id}",
               "DELETE /monitors/{id}",
-              "GET /monitors/{id}/uptime"
+              "GET /monitors/{id}/uptime",
+              "GET /monitors/{id}/response-times"
             ]
           },
           {
@@ -103,7 +104,30 @@
           },
           {
             "group": "Incidents",
-            "pages": ["GET /incidents", "POST /incidents", "GET /incidents/{id}"]
+            "pages": [
+              "GET /incidents",
+              "POST /incidents",
+              "GET /incidents/{id}",
+              "DELETE /incidents/{id}",
+              "GET /incidents/{id}/updates",
+              "GET /incidents/{id}/escalation"
+            ]
+          },
+          {
+            "group": "On-call",
+            "pages": ["GET /schedules", "GET /schedules/{id}"]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "GET /integrations",
+              "GET /integrations/{id}",
+              "PATCH /integrations/{id}"
+            ]
+          },
+          {
+            "group": "Members",
+            "pages": ["GET /members"]
           }
         ]
       }
