@@ -47,6 +47,16 @@ When one turns out to be real, open the incident and use **Escalate to policy** 
 put it on a paging policy. It pages from the first step right then, and keeps
 escalating until someone acknowledges.
 
+## Compose policies
+
+A step can page **another policy** instead of copying its responders. Pick "Page
+another policy" on a step and everyone in the chosen policy is paged at that step.
+
+Use it for a shared group: keep one "Payments on-call" policy and reference it from
+every service that depends on payments. Update the group once, everywhere follows.
+References resolve recursively and are cycle-safe: a policy can't page itself,
+directly or through a chain.
+
 ## Routing a step
 
 A step can carry conditions, so one policy handles different cases:
