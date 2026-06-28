@@ -32,6 +32,21 @@ The runbook shows on the incident and on the acknowledge link, so a responder se
 it the moment they're paged. Use it for the first things to check, who to call, and
 where the dashboards live. Leave it blank if you don't need one.
 
+## Screen noisy alerts
+
+Not every alert should wake someone. Mark a policy **silent** to record its
+incidents on your dashboard without paging anyone, then triage them by hand.
+
+1. In the policy editor, turn on **Silent**.
+2. Point a noisy monitor at the silent policy (or set it as the workspace default).
+
+A silent policy has no steps and sends nothing: no channels, no people, no on-call.
+The incident still shows on your dashboard and status page.
+
+When one turns out to be real, open the incident and use **Escalate to policy** to
+put it on a paging policy. It pages from the first step right then, and keeps
+escalating until someone acknowledges.
+
 ## Routing a step
 
 A step can carry conditions, so one policy handles different cases:
