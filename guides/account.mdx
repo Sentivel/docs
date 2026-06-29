@@ -18,10 +18,12 @@ custom to configure.
 
 | Role        | Can do                                                            |
 | ----------- | ---------------------------------------------------------------- |
-| `owner`     | Everything, plus billing, workspace deletion, and ownership transfer. Exactly one per workspace. |
-| `admin`     | Everything operational, plus managing people and workspace settings. No billing or deletion. |
-| `developer` | Operational work: monitors, components, incidents, status pages, acknowledge. |
-| `viewer`    | Read-only. Can't acknowledge.                                    |
+| **Owner**     | Everything, plus billing, workspace deletion, and ownership transfer. Exactly one per workspace. |
+| **Admin**     | Everything operational, plus managing people and workspace settings. No billing or deletion. |
+| **Responder** | Operational work: monitors, components, incidents, status pages, acknowledge. Goes on call and gets paged. |
+| **Member**    | Read-only. Can't acknowledge. Never paged.                       |
+
+In the API, Member and Responder are the identifiers `viewer` and `developer`.
 
 The single owner can't be removed or self-demoted; the only exit is to transfer
 ownership or delete the workspace.
