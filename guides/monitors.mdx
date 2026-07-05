@@ -60,6 +60,35 @@ Set how often each monitor runs. Pause a monitor to stop checks without deleting
 it. Put a monitor (or a whole workspace) into a maintenance window to skip checks
 while you do planned work, so it doesn't fire a false incident or dent uptime.
 
+### Maintenance from the API
+
+Drive maintenance from your own tooling, so your deploy can flip a server into
+maintenance and Sentivel follows. The monitor's checks pause and its public
+component reads "under maintenance".
+
+```bash Open-ended (cleared when you're done)
+curl -X POST https://www.sentivel.com/api/v1/monitors/$ID/maintenance \
+  -H "Authorization: Bearer $SENTIVEL_TOKEN"
+```
+
+Send an empty body for open-ended maintenance when you don't know how long the
+work runs. Pass `until` (ISO 8601) for a window that auto-expires.
+
+```bash Bounded window
+curl -X POST https://www.sentivel.com/api/v1/monitors/$ID/maintenance \
+  -H "Authorization: Bearer $SENTIVEL_TOKEN" -H "Content-Type: application/json" \
+  -d '{ "until": "2026-07-06T02:00:00Z" }'
+```
+
+End maintenance with `DELETE`. Checks resume on the next poll.
+
+```bash End it
+curl -X DELETE https://www.sentivel.com/api/v1/monitors/$ID/maintenance \
+  -H "Authorization: Bearer $SENTIVEL_TOKEN"
+```
+
+Over MCP, the same is `sentivel_start_maintenance` and `sentivel_end_maintenance`.
+
 ## Uptime
 
 Sentivel keeps a daily uptime rollup per monitor, so the 90-day history on your
