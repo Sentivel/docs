@@ -23,6 +23,56 @@ Add one with a guided, type-first setup. Name it, send a test, and mute it witho
 deleting when you need quiet. Webhook URLs are checked the same way monitor targets
 are, so an integration can't be pointed at an internal address.
 
+## Webhook payloads
+
+A **Webhook** destination receives a `POST` with `Content-Type: application/json`.
+The same reference appears in the dashboard when you add or edit one. Slack, Discord,
+and Teams destinations receive a provider-shaped body instead, so build against the
+Webhook type.
+
+Sentivel sends three events. Branch on the `event` field.
+
+```json incident.opened
+{
+  "event": "incident.opened",
+  "component": "API",
+  "title": "Service disruption — API",
+  "status": "opened",
+  "ackUrl": "https://www.sentivel.com/incidents/inc_9f3a/ack?token=..."
+}
+```
+
+```json incident.resolved
+{
+  "event": "incident.resolved",
+  "component": "API",
+  "title": "Service disruption — API",
+  "status": "resolved"
+}
+```
+
+`incident.escalated` fires on each escalation step while the incident is
+unacknowledged. It carries the open fields plus `step` and `cycle`.
+
+```json incident.escalated
+{
+  "event": "incident.escalated",
+  "step": 2,
+  "cycle": 0,
+  "component": "API",
+  "title": "Service disruption — API",
+  "status": "opened",
+  "ackUrl": "https://www.sentivel.com/incidents/inc_9f3a/ack?token=..."
+}
+```
+
+`ackUrl` is present only while an incident is open and the Acknowledge button is
+enabled for that destination. There is no signature header yet, so keep the secret
+in the URL path and treat the endpoint as unlisted.
+
+To drive a banner on your own site, switch it on for `incident.opened` and clear it
+on `incident.resolved`, keyed off `component`.
+
 ## Inbound sources
 
 Turn an external alert into a Sentivel incident:
