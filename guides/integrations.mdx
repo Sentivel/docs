@@ -84,6 +84,45 @@ Turn an external alert into a Sentivel incident:
 
 This is how you route alerts from other tools into one place.
 
+### What to send us
+
+Create an inbound source and you get a private receive URL. `POST` JSON to it. No
+Bearer token: the unguessable URL is the credential, and you can add a signing
+secret for HMAC on top.
+
+```bash Open an incident
+curl -X POST https://www.sentivel.com/api/inbound/<token> \
+  -H "Content-Type: application/json" \
+  -d '{ "title": "Checkout latency high", "severity": "critical",
+        "status": "firing", "fingerprint": "checkout-latency", "service": "checkout" }'
+```
+
+The receiver reads the common field names, so Prometheus, Grafana, Datadog, and
+Sentry payloads map without reshaping.
+
+| Incident field | Read from (first match wins) |
+|----------------|------------------------------|
+| title          | `title`, `summary`, `message`, `text`, `annotations.summary`, `labels.alertname` |
+| severity       | `severity`, `impact`, `level`, `priority` (mapped to minor, major, or critical) |
+| status         | `status`, `state`, `event_action`, `action` (a resolved value closes the incident) |
+| fingerprint    | `fingerprint`, `groupKey`, `dedup_key`, `incident_key`, `labels.alertname` |
+| metadata       | every other top-level field and `labels`, up to 20 |
+
+The smallest useful call is a `title` and a `severity`. Every field is optional.
+
+Resolve an incident by sending the same `fingerprint` again with a resolved
+`status`.
+
+```bash Resolve it
+curl -X POST https://www.sentivel.com/api/inbound/<token> \
+  -H "Content-Type: application/json" \
+  -d '{ "fingerprint": "checkout-latency", "status": "resolved" }'
+```
+
+With a signing secret set, sign the raw body and send
+`X-Signature: sha256=<HMAC-SHA256>`. A successful call returns
+`{ "ok": true, "action": "opened", "incidentId": "..." }`.
+
 ## People versus channels
 
 A channel is a shared destination. A person is a teammate, paged through an
