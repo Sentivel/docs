@@ -36,14 +36,19 @@
         "groups": [
           {
             "group": "Get started",
-            "pages": ["index", "quickstart", "set-up-with-ai"]
+            "pages": [
+              "index",
+              "quickstart",
+              "set-up-with-ai"
+            ]
           },
           {
             "group": "Monitoring & status",
             "pages": [
               "guides/monitors",
               "guides/status-pages",
-              "guides/dependencies"
+              "guides/dependencies",
+              "guides/migrate"
             ]
           },
           {
@@ -56,11 +61,16 @@
           },
           {
             "group": "Your workspace",
-            "pages": ["guides/account"]
+            "pages": [
+              "guides/account"
+            ]
           },
           {
             "group": "Developers",
-            "pages": ["authentication", "api-overview"]
+            "pages": [
+              "authentication",
+              "api-overview"
+            ]
           }
         ]
       },
@@ -71,7 +81,9 @@
         "groups": [
           {
             "group": "Account",
-            "pages": ["GET /me"]
+            "pages": [
+              "GET /me"
+            ]
           },
           {
             "group": "Components",
@@ -115,7 +127,10 @@
           },
           {
             "group": "On-call",
-            "pages": ["GET /schedules", "GET /schedules/{id}"]
+            "pages": [
+              "GET /schedules",
+              "GET /schedules/{id}"
+            ]
           },
           {
             "group": "Integrations",
@@ -127,7 +142,9 @@
           },
           {
             "group": "Members",
-            "pages": ["GET /members"]
+            "pages": [
+              "GET /members"
+            ]
           }
         ]
       }
@@ -151,7 +168,16 @@
     }
   },
   "contextual": {
-    "options": ["copy", "view", "chatgpt", "claude", "perplexity", "mcp", "cursor", "vscode"]
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {

@@ -1,0 +1,50 @@
+---
+title: "Migrate from Statuspage or Instatus"
+description: "Import your components, incident history, and subscribers in a few minutes."
+icon: "arrow-right-arrow-left"
+---
+
+Sentivel imports a page from Atlassian Statuspage or Instatus: components with
+their grouping, up to 500 incidents of history with every customer-facing update,
+and confirmed email subscribers. The import is idempotent. Run it twice and
+nothing is added twice.
+
+## Get your API key and page ID
+
+For Statuspage: open your avatar menu and choose **API info**. Copy the API key
+and the page ID shown beside it.
+
+For Instatus: create a key under **Developer settings**. The page ID is in the
+dashboard URL.
+
+## Run the import
+
+1. In Sentivel, go to **Status pages → Import from Statuspage or Instatus**.
+2. Pick the source and paste the key and page ID.
+3. Choose the Sentivel page to import into and press **Import**.
+
+You get back a summary of what was added and what was skipped. The key is used
+once for the fetch and never stored.
+
+<Note>
+Scheduled maintenance windows are not imported. They are a different object in
+Sentivel. The summary counts how many were skipped so you can recreate the
+upcoming ones under **Maintenance**.
+</Note>
+
+## Finish the switch
+
+1. Attach a monitor to each imported component. Imported components carry their
+   history but have no checks until you add one.
+2. Map your third-party dependencies (the providers your components rely on).
+   When one has an incident, Sentivel posts a provider-attributed advisory on
+   your page and clears it on resolution.
+3. Point your status subdomain's `CNAME` at Sentivel under the page's
+   custom-domain settings and verify.
+4. Confirm the new page, then cancel the old subscription.
+
+## What subscribers receive
+
+Imported subscribers were confirmed on your old page and stay confirmed here.
+They get email notifications from your Sentivel page's incident updates. No
+re-subscription step.
