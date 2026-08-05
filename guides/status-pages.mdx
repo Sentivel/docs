@@ -40,6 +40,49 @@ Pick a design when you create the page:
 Both render light and dark. Components group under their service, and a service's
 description shows as the category subtitle.
 
+## Order and group components
+
+A new page shows every component in the workspace, ungrouped. Arrange it into
+sections once you have more than a handful.
+
+1. Open the page and find **Page layout**.
+2. Add a section and name it. Leave the name blank to group without a heading.
+3. Drag sections and components into the order you want.
+
+Each component can carry a page-specific name, a one-line description, and a
+toggle for its 90-day history bar. The name applies to that page only, so the
+same component can read differently on an internal page and a customer-facing
+one.
+
+Set the same layout over the API:
+
+```bash Arrange a page
+curl -X PUT https://www.sentivel.com/api/v1/status-pages/$ID/layout \
+  -H "Authorization: Bearer $SENTIVEL_TOKEN" -H "Content-Type: application/json" \
+  -d '{
+        "sections": [
+          { "name": "Core", "items": [
+              { "componentId": "'$API_ID'", "publicName": "Public API" },
+              { "componentId": "'$WEB_ID'" }
+          ]},
+          { "name": "Background jobs", "items": [
+              { "componentId": "'$JOBS_ID'", "showHistory": false }
+          ]}
+        ]
+      }'
+```
+
+`PUT` replaces the whole layout. A component you leave out stops showing on that
+page. It is not deleted, and its monitoring keeps running. Read the current
+layout first with `GET /api/v1/status-pages/$ID/layout` unless you are defining
+the entire page.
+
+Two mistakes return `400` and name the ids: a component the workspace does not
+own, and the same component in two sections.
+
+Over MCP, the same is `sentivel_get_status_page_layout` and
+`sentivel_set_status_page_layout`.
+
 ## Announcements and incidents
 
 Post an announcement for planned work or a heads-up. When an incident is open, the
