@@ -5,12 +5,10 @@ icon: "signal"
 ---
 
 <Frame>
-  <img src="/images/status-page.png" alt="A live Sentivel status page" />
+  ![A live Sentivel status page](/images/status-page.png)
 </Frame>
 
-A status page shows your components, their current status, and a 90-day uptime
-history, grouped by service. It updates from your monitors and your incidents. You
-can run more than one.
+A status page shows your components, their current status, and a 90-day uptime history, grouped by service. It updates from your monitors and your incidents. You can run more than one.
 
 ## Create a page
 
@@ -18,8 +16,7 @@ can run more than one.
 2. Name it and pick a vanity URL.
 3. Choose public or private.
 
-The page is live at `your-slug.sentivel.com`. A page with zero dependencies is a
-finished, valid state: add monitors, publish, done.
+The page is live at `your-slug.sentivel.com`. A page with zero dependencies is a finished, valid state: add monitors, publish, done.
 
 ## Custom domains
 
@@ -34,25 +31,19 @@ Serve a page on your own domain (`status.yourcompany.com`):
 Pick a design when you create the page:
 
 - **Modern.** Bold, the default.
-- **Classic.** Calm and conventional, with status words per component and a
-  classic uptime-bar footer.
+- **Classic.** Calm and conventional, with status words per component and a classic uptime-bar footer.
 
-Both render light and dark. Components group under their service, and a service's
-description shows as the category subtitle.
+Both render light and dark. Components group under their service, and a service's description shows as the category subtitle.
 
 ## Order and group components
 
-A new page shows every component in the workspace, ungrouped. Arrange it into
-sections once you have more than a handful.
+A new page shows every component in the workspace, ungrouped. Arrange it into sections once you have more than a handful.
 
 1. Open the page and find **Page layout**.
 2. Add a section and name it. Leave the name blank to group without a heading.
 3. Drag sections and components into the order you want.
 
-Each component can carry a page-specific name, a one-line description, and a
-toggle for its 90-day history bar. The name applies to that page only, so the
-same component can read differently on an internal page and a customer-facing
-one.
+Each component can carry a page-specific name, a one-line description, and a toggle for its 90-day history bar. The name applies to that page only, so the same component can read differently on an internal page and a customer-facing one.
 
 Set the same layout over the API:
 
@@ -72,28 +63,56 @@ curl -X PUT https://www.sentivel.com/api/v1/status-pages/$ID/layout \
       }'
 ```
 
-`PUT` replaces the whole layout. A component you leave out stops showing on that
-page. It is not deleted, and its monitoring keeps running. Read the current
-layout first with `GET /api/v1/status-pages/$ID/layout` unless you are defining
-the entire page.
+`PUT` replaces the whole layout. A component you leave out stops showing on that page. It is not deleted, and its monitoring keeps running. Read the current layout first with `GET /api/v1/status-pages/$ID/layout` unless you are defining the entire page.
 
-Two mistakes return `400` and name the ids: a component the workspace does not
-own, and the same component in two sections.
+Two mistakes return `400` and name the ids: a component the workspace does not own, and the same component in two sections.
 
-Over MCP, the same is `sentivel_get_status_page_layout` and
-`sentivel_set_status_page_layout`.
+Over MCP, the same is `sentivel_get_status_page_layout` and `sentivel_set_status_page_layout`.
 
 ## Announcements and incidents
 
-Post an announcement for planned work or a heads-up. When an incident is open, the
-page shows it in plain language and stops claiming "all systems operational".
-Upstream advisories from [cascade](/guides/dependencies) appear here too.
+Post an announcement for planned work or a heads-up. When an incident is open, the page shows it in plain language and stops claiming "all systems operational". Upstream advisories from [cascade](/guides/dependencies) appear here too.
+
+## Scheduled maintenance
+
+A maintenance window is a planned-work notice with a headline, a public message, a time range, and the components it affects. Create one under **Maintenance**, and it appears on every status page in the workspace.
+
+Each window reports where it sits right now — scheduled, in progress, completed, or cancelled — so customers reading the page see the state, not a date they have to interpret.
+
+### From your deploy pipeline
+
+Open a window when a release starts and complete it when the release lands:
+
+```bash Bracket a deploy
+WINDOW=$(curl -sX POST https://www.sentivel.com/api/v1/maintenance \
+  -H "Authorization: Bearer $SENTIVEL_TOKEN" -H "Content-Type: application/json" \
+  -d '{
+        "title": "Deploying the API",
+        "body": "Some requests may be slower than usual for a few minutes.",
+        "startsAt": "2026-09-01T22:00:00Z",
+        "endsAt":   "2026-09-01T22:30:00Z"
+      }' | jq -r .data.id)
+
+# … run the deploy …
+
+curl -X PATCH https://www.sentivel.com/api/v1/maintenance/$WINDOW \
+  -H "Authorization: Bearer $SENTIVEL_TOKEN" -H "Content-Type: application/json" \
+  -d '{ "status": "complete" }'
+```
+
+On `PATCH`, only the fields you send change — extending a running window is `{ "endsAt": … }` alone, and the message it opened with survives.
+
+`status` is an action rather than a state you assign: `start` begins the window now, `complete` ends it now, and `cancel` calls it off while keeping it on the public record. The other phases follow from the clock, so writing one directly would only be contradicted by the times.
+
+Omit `componentIds` to say the whole workspace is affected.
+
+Over MCP, the same is `sentivel_create_maintenance`, `sentivel_update_maintenance`, `sentivel_list_maintenance`, `sentivel_get_maintenance`, and `sentivel_delete_maintenance`.
+
+This is a different thing from pausing a single monitor (see [Monitors](/guides/monitors)): that stops the checks and tells nobody, while a window is what your customers read.
 
 ## Subscribers and feeds
 
-Customers can subscribe by email (double opt-in: they confirm before they ever
-get a message) or follow the Atom feed at `/feed`. Both are notified when you post
-an incident update.
+Customers can subscribe by email (double opt-in: they confirm before they ever get a message) or follow the Atom feed at `/feed`. Both are notified when you post an incident update.
 
 ## Embed status elsewhere
 
@@ -102,5 +121,4 @@ an incident update.
 
 ## Password-gate a page
 
-Make a page private and set a password to share it with a limited audience without
-making it public.
+Make a page private and set a password to share it with a limited audience without making it public.
