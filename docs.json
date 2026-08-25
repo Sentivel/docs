@@ -115,6 +115,16 @@
             ]
           },
           {
+            "group": "Maintenance",
+            "pages": [
+              "GET /maintenance",
+              "POST /maintenance",
+              "GET /maintenance/{id}",
+              "PATCH /maintenance/{id}",
+              "DELETE /maintenance/{id}"
+            ]
+          },
+          {
             "group": "Incidents",
             "pages": [
               "GET /incidents",
