@@ -99,10 +99,13 @@
             "pages": [
               "GET /monitors",
               "POST /monitors",
+              "GET /monitors/{id}",
               "PATCH /monitors/{id}",
               "DELETE /monitors/{id}",
               "GET /monitors/{id}/uptime",
-              "GET /monitors/{id}/response-times"
+              "GET /monitors/{id}/response-times",
+              "POST /monitors/{id}/maintenance",
+              "DELETE /monitors/{id}/maintenance"
             ]
           },
           {
@@ -111,7 +114,9 @@
               "GET /status-pages",
               "POST /status-pages",
               "PATCH /status-pages/{id}",
-              "DELETE /status-pages/{id}"
+              "DELETE /status-pages/{id}",
+              "GET /status-pages/{id}/layout",
+              "PUT /status-pages/{id}/layout"
             ]
           },
           {
