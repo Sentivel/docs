@@ -4,12 +4,19 @@ description: "Create an API token and authenticate your requests."
 icon: "key"
 ---
 
-Every request authenticates with an **org API token**, sent as a Bearer
-credential:
+Every request carries a Bearer token:
 
 ```bash
 Authorization: Bearer sv_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
+
+Three kinds of token reach the same API. The prefix tells you which you hold.
+
+| Prefix    | Kind          | Acts as                       | Workspace                        |
+| --------- | ------------- | ----------------------------- | -------------------------------- |
+| `sv_`     | Org token     | The role you gave the token   | The one it was created in        |
+| `svu_`    | Personal      | You, at your own role         | Any you belong to                |
+| `mcp_at_` | Connected app | You, at your own role         | The ones you granted it          |
 
 ## Create a token
 
@@ -22,8 +29,25 @@ role for the token and, optionally, an expiry.
   create a new one.
 </Warning>
 
-A token is scoped to a single workspace and acts at its role. There is no separate
-permission language to learn: it is exactly the roles your teammates have.
+Create a personal token under **Account → API tokens**. It acts as you, so it
+carries your own role in every workspace you belong to. A connected app receives
+its token through OAuth, and you choose which workspaces it may reach when you
+approve the connection. Revoke either under **Account**.
+
+## Name a workspace
+
+An org token is bound to one workspace, so there is nothing to choose.
+
+A personal or connected-app token can reach several. Name one per request:
+
+```bash
+X-Sentivel-Workspace: acme
+```
+
+Omit the header and the request goes to your primary workspace. When the token
+can reach more than one and the choice is ambiguous, you get a `400`
+`invalid_request` listing the candidates in `details.workspaces`. Retry with the
+header set.
 
 ## What each role can do
 
@@ -33,8 +57,10 @@ permission language to learn: it is exactly the roles your teammates have.
 | `responder` | Yes  | Yes                                                  |
 | `admin`     | Yes  | Yes                                                  |
 
-A token is never an `owner`. Billing and workspace deletion are not API
-operations.
+An org token is never an `owner`, because `owner` is not one of the roles you can
+give it. A personal or connected-app token acts as you, so `GET /me` reports
+`owner` when that is your role. Billing, member management, and workspace
+deletion are not API operations either way.
 
 ## Errors
 
@@ -43,7 +69,7 @@ operations.
 | `unauthorized`    | 401  | Missing, invalid, revoked, or expired token      |
 | `forbidden`       | 403  | The token's role cannot perform this action      |
 | `not_found`       | 404  | No such resource                                 |
-| `invalid_request` | 400  | Body failed validation (see `details`)           |
+| `invalid_request` | 400  | Body failed validation, or the workspace is ambiguous (see `details`) |
 | `rate_limited`    | 429  | Too many requests                                |
 | `conflict`        | 409  | A status-page slug is reserved or already taken  |
 | `internal`        | 500  | Something went wrong on our side                 |
