@@ -13,14 +13,14 @@ A monitor checks one thing on a schedule. When it fails enough times in a row, S
 ## Monitor types
 
 - **HTTP.** Request a URL and assert on the response: expected status codes, a keyword that must be present or absent, a response-time budget.
-- **Heartbeat.** For cron jobs and workers. Your job pings a URL on a schedule; a ping that's late by more than the grace period is a miss.
+- **Heartbeat.** For cron jobs, workers, and anything that runs on your side. It pings a URL; a ping that's late by more than the grace period is a miss, or idle time, whichever you choose.
 - **TCP.** Open a connection to a host and port (databases, mail, game servers).
 - **DNS.** Resolve a record and assert on the answer, optionally through a specific nameserver.
 - **SSL.** Watch a certificate's expiry and warn before it lapses. This sends an internal ops alert, not a public incident: a soon-to-expire cert isn't an outage yet.
 
 ## Add an HTTP monitor
 
-1. Go to **Monitors → New monitor**.
+1. Go to **Monitors** and click **Add a monitor**.
 2. Enter the URL to check and the method.
 3. Set what counts as healthy: expected status codes, an optional keyword, an optional response-time threshold.
 4. Attach it to a component (or let Sentivel create one).
@@ -29,6 +29,21 @@ The first check runs on the next poll cycle, within about two minutes. Until a n
 
 <Note>
   A monitor's target is fetched from our servers on every poll, so it must be a public http(s) address. Private, loopback, link-local, and cloud-metadata hosts are rejected, and redirects are re-checked per hop.
+</Note>
+
+## Add a heartbeat
+
+1. Go to **Monitors**, click **Add a monitor**, and choose **Heartbeat**.
+2. Set the **Expected interval** (how often a ping should arrive) and the **Grace period** (extra time before a late ping counts).
+3. Choose what happens **When pings stop**:
+   - **Mark it down.** For scheduled jobs. A missed ping opens an incident and pages whoever's on call.
+   - **Show it as idle.** For scripts and apps that only ping while someone is using them. A missed ping opens no incident and records no downtime. The component reads **Idle** until the next ping, and a status page where nothing is running reads **No recent activity**.
+4. Call the ping URL from your job. Sentivel shows it once the monitor is created, with snippets for cron, Node.js, Python, and Lua.
+
+A heartbeat reads **Awaiting first ping** until a ping arrives at least one interval after you create it, so a test ping during setup never counts as a job that later stopped.
+
+<Note>
+  The ping URL is a credential. Anyone who has it can send pings, so keep it out of public repositories. If it leaks, click **Regenerate** on the monitor's page; the old URL stops working immediately.
 </Note>
 
 ## Flap thresholds
