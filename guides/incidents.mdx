@@ -8,9 +8,7 @@ icon: "triangle-exclamation"
   <img src="/images/incidents.png" alt="The incidents view in the dashboard" />
 </Frame>
 
-An incident is the unit of "something is wrong". A monitor opens one automatically
-when it fails past its threshold; you can also open one by hand for an issue a
-check can't see. Either way it shows on the status page and drives escalation.
+An incident records that something is wrong. A monitor opens one when it fails past its threshold, and you can open one by hand for an issue a check can't see. Either way it shows on the status page and starts escalation.
 
 ## Open one by hand
 
@@ -23,19 +21,14 @@ stops claiming everything is operational.
 
 ## Post updates
 
-Keep customers informed as you work. Each update has a status: investigating,
+Each update has a status: investigating,
 identified, monitoring, or resolved. Subscribers and the page's feed get every
 update. Resolving the incident clears it from the page's active list and returns
 the component to operational.
 
 ## Draft with AI
 
-The update composer has a **Draft with AI** option (when an API key is
-configured). It proposes a clear, on-voice update from the incident's context. It
-never posts on its own: you review and edit first, and the "AI-drafted" badge
-clears the moment you change the text or the status. The same honest-copy rules as
-the rest of Sentivel apply, so it states what's known and promises nothing it
-can't keep.
+The update composer has a **Draft with AI** option when an API key is configured. It writes an update from the incident's context, stating what's known and making no promises. Nothing posts until you review it, and the "AI-drafted" badge clears as soon as you change the text or the status.
 
 ## Acknowledge
 
@@ -45,8 +38,7 @@ Acknowledging an open incident stops its escalation ladder. See
 ## Postmortems
 
 After an incident resolves, write a blameless postmortem on it: what happened, the
-impact, and what you're changing. It's part of the incident's record and can show
-on the public history.
+impact, and what you're changing. It stays on the incident and can show in the public history.
 
 ## Timeline
 

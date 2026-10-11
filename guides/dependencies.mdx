@@ -13,8 +13,7 @@ provider has an incident, your customers feel it, and they ask you what is going
 on. Sentivel watches those providers and, when one breaks, posts a plain-English
 advisory on your status page automatically.
 
-You map which of your components depend on which providers. That map drives
-everything here. Sentivel never guesses a dependency; you define it.
+You map which of your components depend on which providers. Sentivel never guesses a dependency.
 
 ## How cascade works
 
@@ -31,8 +30,7 @@ The advisory attributes the problem to the provider, in plain words:
 > We're aware of an ongoing issue with AWS us-east-1, a service we rely on. Some
 > functionality may be affected until it's resolved.
 
-It never asserts that you are down, and never makes a promise it can't keep ("your
-data is safe"). It states what is true: a provider you depend on has a problem.
+It never says that you are down, and never makes a promise it can't keep ("your data is safe").
 
 ## Link a dependency
 
@@ -48,18 +46,13 @@ data is safe"). It states what is true: a provider you depend on has a problem.
   going non-operational, even when the provider hasn't filed an incident yet.
 </Note>
 
-A link re-evaluates as soon as you save it, so an issue that is already happening
-shows up right away, not on the next poll.
+A link is evaluated as soon as you save it, so an issue already in progress shows up straight away.
 
 ## Auto-post or review first
 
-Each cascade has two modes:
+With **Auto-post**, the default, the advisory goes up as soon as a provider you depend on has an incident. It only attributes the issue to the provider, so it needs no sign-off.
 
-- **Auto-post (default).** The advisory goes up the moment a depended-on provider
-  has an incident. It's a factual attribution to the provider, so it needs no
-  sign-off.
-- **Review first.** The cascade is flagged instead of posted, and Sentivel emails
-  your owners and admins to review it. You publish it with one click.
+With **Review first**, the cascade is flagged and Sentivel emails your owners and admins. One click publishes it.
 
 ## Write your own advisory
 
@@ -77,12 +70,9 @@ notice, and promise nothing you can't keep.
 
 ## Review what's live
 
-The **Dependencies** page groups current upstream issues by provider. Each one has
-a single reversible **Show** / **Hide** toggle, so you stay in control of what
-customers see. Hiding an advisory is logged, and survives later polls of the same
-incident.
+The **Dependencies** page groups current upstream issues by provider. Each one has a **Show** / **Hide** toggle. Hiding an advisory is logged, and it stays hidden through later polls of the same incident.
 
 ## Suggestions
 
 When a monitor's target is hosted on a provider in the catalog, Sentivel suggests
-the dependency link. It never creates the link for you; you confirm it.
+the dependency link. Nothing is linked until you confirm it.

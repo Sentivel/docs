@@ -14,21 +14,18 @@ in an [escalation policy](/guides/escalation).
 
 ## Outbound destinations
 
-- **Slack.** Post incidents to a channel.
-- **Discord.** Post incidents to a channel.
-- **Microsoft Teams.** Post to a Teams workflow (incoming webhook).
-- **Webhook.** POST a JSON payload to any URL you control.
+| Destination | What it receives |
+| --- | --- |
+| Slack | Incident posts in a channel |
+| Discord | Incident posts in a channel |
+| Microsoft Teams | Posts to a Teams workflow (incoming webhook) |
+| Webhook | A JSON `POST` to any URL you control |
 
-Add one with a guided, type-first setup. Name it, send a test, and mute it without
-deleting when you need quiet. Webhook URLs are checked the same way monitor targets
-are, so an integration can't be pointed at an internal address.
+You can name each destination, send it a test, and mute it without deleting it. Webhook URLs are checked the same way monitor targets are, so an integration can't point at an internal address.
 
 ## Webhook payloads
 
-A **Webhook** destination receives a `POST` with `Content-Type: application/json`.
-The same reference appears in the dashboard when you add or edit one. Slack, Discord,
-and Teams destinations receive a provider-shaped body instead, so build against the
-Webhook type.
+A Webhook destination receives a `POST` with `Content-Type: application/json`. The dashboard shows the same reference when you add or edit one. Slack, Discord, and Teams receive a body shaped for each provider, so build your own handlers against the Webhook type.
 
 Sentivel sends three events. Branch on the `event` field.
 
@@ -75,14 +72,11 @@ on `incident.resolved`, keyed off `component`.
 
 ## Inbound sources
 
-Turn an external alert into a Sentivel incident:
+An inbound source turns an alert from another tool into a Sentivel incident. There are two kinds.
 
-- **Incoming webhook.** A per-integration signed URL. POST to it and Sentivel
-  opens an incident, mapping the payload to a title and metadata.
-- **Email to incident.** A unique address per integration; the subject and body
-  become the incident.
+An incoming webhook is a signed URL per integration. POST to it and Sentivel opens an incident, mapping the payload to a title and metadata.
 
-This is how you route alerts from other tools into one place.
+Email to incident gives each integration a unique address. The subject and body of each email become the incident.
 
 ### What to send us
 
@@ -125,6 +119,4 @@ With a signing secret set, sign the raw body and send
 
 ## People versus channels
 
-A channel is a shared destination. A person is a teammate, paged through an
-escalation policy on their own contact methods. Keep the two distinct: a channel
-broadcasts, a policy pages individuals until one acknowledges.
+A channel is a shared destination that broadcasts to everyone in it. A person is a teammate, paged through an escalation policy on their own contact methods until someone acknowledges.
