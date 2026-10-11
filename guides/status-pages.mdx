@@ -16,7 +16,7 @@ A status page shows your components, their current status, and a 90-day uptime h
 2. Name it and pick a vanity URL.
 3. Choose public or private.
 
-The page is live at `your-slug.sentivel.com`. A page with zero dependencies is a finished, valid state: add monitors, publish, done.
+The page is live at `your-slug.sentivel.com`. Mapping dependencies is optional.
 
 ## Custom domains
 
@@ -28,10 +28,7 @@ Serve a page on your own domain (`status.yourcompany.com`):
 
 ## Design
 
-Pick a design when you create the page:
-
-- **Modern.** Bold, the default.
-- **Classic.** Calm and conventional, with status words per component and a classic uptime-bar footer.
+Pick a design when you create the page. Modern is the default. Classic adds a status word beside each component and an uptime-bar footer.
 
 Both render light and dark. Components group under their service, and a service's description shows as the category subtitle.
 
@@ -77,7 +74,7 @@ Post an announcement for planned work or a heads-up. When an incident is open, t
 
 A maintenance window is a planned-work notice with a headline, a public message, a time range, and the components it affects. Create one under **Maintenance**, and it appears on every status page in the workspace.
 
-Each window reports where it sits right now — scheduled, in progress, completed, or cancelled — so customers reading the page see the state, not a date they have to interpret.
+Each window shows its current state: scheduled, in progress, completed, or cancelled.
 
 ### From your deploy pipeline
 
@@ -100,15 +97,15 @@ curl -X PATCH https://www.sentivel.com/api/v1/maintenance/$WINDOW \
   -d '{ "status": "complete" }'
 ```
 
-On `PATCH`, only the fields you send change — extending a running window is `{ "endsAt": … }` alone, and the message it opened with survives.
+On `PATCH`, only the fields you send change. To extend a running window, send `{ "endsAt": … }` alone and the original message stays.
 
-`status` is an action rather than a state you assign: `start` begins the window now, `complete` ends it now, and `cancel` calls it off while keeping it on the public record. The other phases follow from the clock, so writing one directly would only be contradicted by the times.
+`status` takes an action: `start` begins the window now, `complete` ends it now, and `cancel` calls it off and keeps it on the public record. The other phases follow from the start and end times, so you can't set them directly.
 
 Omit `componentIds` to say the whole workspace is affected.
 
 Over MCP, the same is `sentivel_create_maintenance`, `sentivel_update_maintenance`, `sentivel_list_maintenance`, `sentivel_get_maintenance`, and `sentivel_delete_maintenance`.
 
-This is a different thing from pausing a single monitor (see [Monitors](/guides/monitors)): that stops the checks and tells nobody, while a window is what your customers read.
+Pausing a monitor (see [Monitors](/guides/monitors)) stops its checks without telling customers. A maintenance window shows on your status page.
 
 ## Subscribers and feeds
 
@@ -116,8 +113,7 @@ Customers can subscribe by email (double opt-in: they confirm before they ever g
 
 ## Embed status elsewhere
 
-- **Badge.** An SVG at `…/badge.svg?component=<id>` for a README or site footer.
-- **Widget.** A themed live HTML widget you can iframe.
+Put an SVG badge from `…/badge.svg?component=<id>` in a README or site footer, or iframe the themed live HTML widget.
 
 ## Password-gate a page
 

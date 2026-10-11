@@ -1,6 +1,6 @@
 ---
 title: "Escalation & on-call"
-description: "Get the right person, on the right channel, until someone responds."
+description: "Page the right people until someone acknowledges."
 icon: "bell"
 ---
 
@@ -29,8 +29,7 @@ Give a policy a runbook: a checklist or playbook for whoever it pages. Write it 
 the policy editor under **Runbook**. Markdown works.
 
 The runbook shows on the incident and on the acknowledge link, so a responder sees
-it the moment they're paged. Use it for the first things to check, who to call, and
-where the dashboards live. Leave it blank if you don't need one.
+it as soon as they're paged. Use it for the first things to check, who to call, and where the dashboards live.
 
 ## Screen noisy alerts
 
@@ -40,7 +39,7 @@ incidents on your dashboard without paging anyone, then triage them by hand.
 1. In the policy editor, turn on **Silent**.
 2. Point a noisy monitor at the silent policy (or set it as the workspace default).
 
-A silent policy has no steps and sends nothing: no channels, no people, no on-call.
+A silent policy has no steps and sends nothing.
 The incident still shows on your dashboard and status page.
 
 When one turns out to be real, open the incident and use **Escalate to policy** to
@@ -53,20 +52,20 @@ A step can page **another policy** instead of copying its responders. Pick "Page
 another policy" on a step and everyone in the chosen policy is paged at that step.
 
 Use it for a shared group: keep one "Payments on-call" policy and reference it from
-every service that depends on payments. Update the group once, everywhere follows.
-References resolve recursively and are cycle-safe: a policy can't page itself,
+every service that depends on payments. Change the group once and every policy that references it picks up the change. References resolve recursively, and a policy can't page itself,
 directly or through a chain.
 
 ## Routing a step
 
 A step can carry conditions, so one policy handles different cases:
 
-- **Severity.** Fire only at or above a minimum impact.
-- **Metadata.** Fire only when the incident's metadata matches (for example
-  `env: production`).
-- **Time of day.** Fire only on certain days and hours, in a timezone you choose.
-  Give two steps complementary windows to notify a channel in business hours and
-  page on-call out of hours.
+| Condition | The step fires only when |
+| --- | --- |
+| Severity | The impact is at or above a minimum |
+| Metadata | The incident's metadata matches, for example `env: production` |
+| Time of day | It's within certain days and hours, in a timezone you choose |
+
+Give two steps complementary time windows to notify a channel in business hours and page on-call out of hours.
 
 ## Acknowledge
 
@@ -89,11 +88,11 @@ A schedule rotates who's on call. Configure the rotation cadence and the
 responders; cover a gap with a one-off override. A step that targets a schedule
 pages whoever is on call at that moment.
 
-- **Coverage-gap fallback.** If a schedule has no one on call, the step pages the
-  workspace owners and admins instead of paging no one.
-- **Handoff reminders.** Opt in to a heads-up email before your shift starts, so
-  a handoff isn't a surprise. Off by default.
-- **Holiday.** Pause your own paging while you're away; your team is still paged.
+If a schedule has no one on call, the step pages the workspace owners and admins.
+
+You can opt in to an email before your shift starts. It's off by default.
+
+Holiday mode pauses your own paging while you're away. The rest of your team is still paged.
 
 ## Calendars
 

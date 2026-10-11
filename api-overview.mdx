@@ -5,13 +5,9 @@ icon: "code"
 ---
 
 The API manages your workspace in code: create components, monitors, and status
-pages, and read their state. It is built for CI pipelines, infrastructure as code,
-and AI agents. To call it as an agent instead, see [Set up with AI](/set-up-with-ai).
+pages, and read their state from CI pipelines, infrastructure as code, or AI agents. To connect an agent over MCP, see [Set up with AI](/set-up-with-ai).
 
-- **Base URL:** `https://www.sentivel.com/api/v1`
-- **Format:** JSON in, JSON out. Times are ISO 8601 (UTC).
-- **Auth:** a Bearer token. Org, personal, or connected app. See
-  [Authentication](/authentication).
+The base URL is `https://www.sentivel.com/api/v1`. Requests and responses are JSON, and times are ISO 8601 in UTC. Every request needs a Bearer token (org, personal, or connected app); see [Authentication](/authentication).
 
 ## Response shape
 

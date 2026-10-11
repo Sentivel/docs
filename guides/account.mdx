@@ -13,15 +13,14 @@ how you personally get paged and sign in.
 
 ## Roles
 
-Sentivel has four fixed roles. Capabilities follow from the role; there's nothing
-custom to configure.
+Sentivel has four fixed roles. Custom roles aren't supported.
 
 | Role        | Can do                                                            |
 | ----------- | ---------------------------------------------------------------- |
-| **Owner**     | Everything, plus billing, workspace deletion, and ownership transfer. Exactly one per workspace. |
-| **Admin**     | Everything operational, plus managing people and workspace settings. No billing or deletion. |
-| **Responder** | Operational work: monitors, components, incidents, status pages, acknowledge. Goes on call and gets paged. |
-| **Member**    | Read-only. Can't acknowledge. Never paged.                       |
+| Owner | Everything, plus billing, workspace deletion, and ownership transfer. Exactly one per workspace. |
+| Admin | Everything operational, plus managing people and workspace settings. No billing or deletion. |
+| Responder | Operational work: monitors, components, incidents, status pages, acknowledge. Goes on call and gets paged. |
+| Member | Read-only. Can't acknowledge. Never paged. |
 
 The single owner can't be removed or self-demoted; the only exit is to transfer
 ownership or delete the workspace.
@@ -29,8 +28,7 @@ ownership or delete the workspace.
 ## Invite people
 
 Go to **Teams**, invite by email, and pick a role. The invite link is bound to
-that email, so a forwarded link can't be claimed by someone else. New people set
-up their whole account from the link.
+that email, so a forwarded link can't be claimed by someone else. New people create their account from the link.
 
 ## How you get paged
 
@@ -44,13 +42,11 @@ paged.
 
 ## Security
 
-- **Two-factor (TOTP).** Enrol an authenticator app; Sentivel enforces it at
-  login.
-- **Password and sign-in email.** Change either from Account → Security. An email
-  change is confirmed from both the old and new address.
-- **Sessions.** Sign out everywhere in one action.
-- **Account deletion** needs a fresh emailed code on top of typing DELETE, and is
-  blocked if you're the sole owner of a shared workspace.
+Enrol an authenticator app for two-factor sign-in (TOTP). Once enrolled, Sentivel asks for a code at every login.
+
+Change your password or sign-in email from Account → Security. An email change has to be confirmed from both the old and the new address. You can also sign out of every session at once.
+
+Deleting your account needs a code sent to your email as well as typing DELETE. It's blocked while you're the sole owner of a shared workspace.
 
 ## Your data
 
