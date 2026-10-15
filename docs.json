@@ -116,7 +116,12 @@
               "PATCH /status-pages/{id}",
               "DELETE /status-pages/{id}",
               "GET /status-pages/{id}/layout",
-              "PUT /status-pages/{id}/layout"
+              "PUT /status-pages/{id}/layout",
+              "PUT /status-pages/{id}/logo",
+              "DELETE /status-pages/{id}/logo",
+              "PUT /status-pages/{id}/custom-domain",
+              "POST /status-pages/{id}/custom-domain/verify",
+              "DELETE /status-pages/{id}/custom-domain"
             ]
           },
           {
