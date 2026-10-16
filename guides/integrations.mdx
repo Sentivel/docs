@@ -23,6 +23,8 @@ in an [escalation policy](/guides/escalation).
 
 You can name each destination, send it a test, and mute it without deleting it. Webhook URLs are checked the same way monitor targets are, so an integration can't point at an internal address.
 
+To receive incidents in an app you build on Sentivel, use [webhook subscriptions](/guides/webhook-subscriptions) instead.
+
 ## Webhook payloads
 
 A Webhook destination receives a `POST` with `Content-Type: application/json`. The dashboard shows the same reference when you add or edit one. Slack, Discord, and Teams receive a body shaped for each provider, so build your own handlers against the Webhook type.

@@ -1,0 +1,132 @@
+---
+title: "Webhook subscriptions"
+description: "Receive signed incident events in an app connected over MCP."
+icon: "tower-broadcast"
+---
+
+A connected app (an app the user authorised over OAuth through the hosted MCP server) can ask Sentivel to `POST` signed incident events to it. It takes one tool call. The user sets nothing up.
+
+Use this when you build an app on top of Sentivel. To send alerts to a tool your team already uses, add a [Webhook integration](/guides/integrations) instead.
+
+## Subscribe
+
+Call `sentivel_create_webhook_subscription` with an `https` URL you control.
+
+```json Request
+{ "url": "https://example.com/webhooks/sentivel" }
+```
+
+```json Response
+{
+  "id": "4c1d9a7e-1f2b-4c3d-9e8f-7a6b5c4d3e2f",
+  "url": "https://example.com/webhooks/sentivel",
+  "secret": "whsec_kQ3x9mT0bZ7vN2pL5rY8cW1hD4fJ6gS0aE3uI9oK2tM",
+  "events": ["incident.opened", "incident.updated", "incident.resolved"]
+}
+```
+
+Store the `secret`. Sentivel shows it once. Calling again with the same URL keeps the `id` and returns a new secret, which is also how you recover a lost one.
+
+| Tool | Input | Returns |
+| --- | --- | --- |
+| `sentivel_create_webhook_subscription` | `{ "url" }` | `{ "id", "url", "secret", "events" }` |
+| `sentivel_list_webhook_subscriptions` | `{}` | `[{ "id", "url", "events", "createdAt" }]` |
+| `sentivel_delete_webhook_subscription` | `{ "id" }` | `{ "deleted": true }` |
+
+- The URL must be `https` and publicly reachable. Private, loopback, link-local and cloud metadata addresses are refused, and the host is checked again on every send.
+- Each connection or token can hold up to 10 subscriptions.
+- An OAuth connection or an org token can subscribe. A personal token can't.
+
+## What a subscription receives
+
+Every incident event in the workspaces the credential can use at the moment of delivery:
+
+- For an OAuth connection, the workspaces the user granted, that they still belong to, and whose owner allows connected apps. Sentivel checks this on every attempt.
+- For an org token, its own workspace, while the token is live and can read incidents.
+
+That covers incidents from monitors, incidents opened by hand or from an inbound alert, and incidents at providers the workspace tracks. A subscription isn't part of any escalation policy, so it receives every event in scope. Sentivel sends `incident.updated` when an incident gets a new update or changes status. An incident first seen already resolved sends nothing.
+
+Revoking the connection under **Account → Connections** deletes its subscriptions. So does revoking the org token.
+
+## Handle a delivery
+
+Each event arrives as a `POST`.
+
+```http Headers
+POST /webhooks/sentivel
+Content-Type: application/json
+User-Agent: Sentivel-Webhooks/1
+Sentivel-Event-Id: evt_3b0c5c9e2f7a4d18a6e1b2c3d4e5f607
+Sentivel-Signature: t=1792195200,v1=5f2b8e1c…
+```
+
+```json Body
+{
+  "id": "evt_3b0c5c9e2f7a4d18a6e1b2c3d4e5f607",
+  "type": "incident.opened",
+  "created_at": "2026-10-16T09:41:07.000Z",
+  "workspace": { "id": "7a1e…", "name": "Acme" },
+  "data": {
+    "incident": {
+      "id": "c51f…",
+      "title": "API is down",
+      "status": "investigating",
+      "severity": "major",
+      "source": "monitor",
+      "component": { "id": "0d2a…", "name": "API" },
+      "provider": null,
+      "started_at": "2026-10-16T09:39:00.000Z",
+      "resolved_at": null,
+      "url": "https://www.sentivel.com/dashboard/incidents/c51f…"
+    }
+  }
+}
+```
+
+| Field | Meaning |
+| --- | --- |
+| `id` | The event. Identical on every retry, so use it to drop duplicates. |
+| `type` | `incident.opened`, `incident.updated` or `incident.resolved` |
+| `created_at` | When the change happened (the incident's newest update) |
+| `workspace` | The workspace the incident belongs to |
+| `status` | `investigating`, `identified`, `monitoring` or `resolved` |
+| `severity` | `none`, `minor`, `major` or `critical` |
+| `source` | `monitor`, `manual` (by hand or from an inbound alert) or `provider` |
+| `component` | The affected component, or `null` |
+| `provider` | `{ "id", "name", "slug" }` for a provider's incident, otherwise `null` |
+| `url` | The incident in the dashboard, or the provider's page for a provider's incident |
+
+## Verify the signature
+
+`Sentivel-Signature` is `t=<unix seconds>,v1=<hex HMAC-SHA256>`. The HMAC is keyed with the whole `whsec_…` secret over `"<t>.<raw body>"`.
+
+1. Read the raw body before parsing it.
+2. Compute the HMAC and compare it with `v1` in constant time.
+3. Refuse a `t` more than 5 minutes from your clock, so a captured request can't be replayed.
+
+```ts verify.ts
+import { createHmac, timingSafeEqual } from "node:crypto";
+
+export function verifySentivel(rawBody: string, header: string | null, secret: string): boolean {
+  if (!header) return false;
+  const parts = Object.fromEntries(header.split(",").map((p) => p.split("=", 2)));
+  const t = Number(parts.t);
+  if (!Number.isInteger(t) || Math.abs(Date.now() / 1000 - t) > 300) return false;
+  const expected = createHmac("sha256", secret).update(`${t}.${rawBody}`).digest();
+  const given = Buffer.from(String(parts.v1 ?? ""), "hex");
+  return given.length === expected.length && timingSafeEqual(given, expected);
+}
+```
+
+Each retry is signed again with a new `t`. The body doesn't change.
+
+## Respond
+
+- Answer with any `2xx` within 10 seconds. Redirects aren't followed.
+- A timeout, a connection error, `408`, `429` or any `5xx` is retried with backoff for 30 minutes.
+- Any other `4xx` stops that event.
+- `410 Gone` also deletes the subscription. Return it when the subscriber no longer exists on your side.
+
+<Note>
+Delivery is at least once, and a retried event can arrive out of order. Deduplicate on `id`, and use `status` or `created_at` to order what you show.
+</Note>
