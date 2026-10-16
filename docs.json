@@ -69,7 +69,8 @@
             "group": "Developers",
             "pages": [
               "authentication",
-              "api-overview"
+              "api-overview",
+              "guides/webhook-subscriptions"
             ]
           }
         ]
